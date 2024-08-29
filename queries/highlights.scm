@@ -75,8 +75,16 @@
 
 ; NOTE: This query is a bit of a work around for the fact that the dart grammar doesn't
 ; specifically identify a node as a function call
-(((identifier) @function (#match? @function "^_?[a-z]"))
- . (selector . (argument_part))) @function
+(((identifier) @function.call (#match? @function.call "^_?[a-z]"))
+ . (selector . (argument_part))) @function.call
+
+((selector
+      . (unconditional_assignable_selector . (identifier) @function.call (#set! priority 105)))
+  . (selector . (argument_part)))
+
+((cascade_section
+      . (cascade_selector . (identifier) @function.call (#set! priority 105))
+  . (argument_part)))
 
 ; Annotations
 ; --------------------
